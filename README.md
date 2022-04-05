@@ -1,2 +1,2 @@
-# hello-world
-gir 및 git 공부용
+# algorithm
+python 공부 & 알고리즘 공부
