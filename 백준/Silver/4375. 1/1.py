@@ -10,4 +10,5 @@ while True:
         if a%N==0:
             print(i+1)
             break
-        i+=1
+        else:
+            i+=1
