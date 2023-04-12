@@ -1,17 +1,12 @@
-n=int(input())
-
-if n<100:
-    print(n)
-else:
+x=int(input())
+if x>99:
     cnt=99
-    for i in range(99,n+1):
+    for i in range(100,x+1):
         a=i//100
         b=i%100//10
         c=i%10
-        first = b-a
-        second = c-b
-        if first==second:
+        if (b-a)==(c-b):
             cnt+=1
-        else:
-            continue
-    print(cnt)   
+else:
+    cnt=x
+print(cnt)
