@@ -1,11 +1,12 @@
-def move(no, x,y):
-    if no>1:
-        move(no-1,x,6-x-y)
+import sys
+def hanoi(n,x,y):
+    if n>1:
+        hanoi(n-1,x,6-x-y)
     print(f'{x} {y}')
-    if no>1:
-        move(no-1,6-x-y,y)
+    if n>1:
+        hanoi(n-1,6-x-y,y)
     
-no = int(input())
-print(2**no-1)
-if no<=20:
-    move(no,1,3)
+n=int(sys.stdin.readline())
+print(2**n-1)  
+if n<=20:
+    hanoi(n,1,3)
