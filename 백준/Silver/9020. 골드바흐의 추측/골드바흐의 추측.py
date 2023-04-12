@@ -1,21 +1,21 @@
 import math
-def find(n):
+import sys
+def is_prime(n):
     for i in range(2,int(math.sqrt(n))+1):
         if n%i==0:
-            return True
-    return False    
-                
-t= int(input())
+            return False
+    return True
 
-max_list=[]
-for i in range(t):
-    n=int(input())
-    max_list.append(n)
-    
-for n in max_list:
-    num_list=[]
-    for i in range(2,n//2+1):
-        if find(i)==False and find(n-i)==False:
-            num_list.append(i)
-    result= max(num_list)
-    print(f'{result} {n-result}')  
+
+T=int(sys.stdin.readline())
+list1=[]
+for i in range(T):
+    n=int(sys.stdin.readline())
+    list1.append(n)
+for j in list1:
+    result=[]
+    for i in range(2,j//2+1):
+        if is_prime(i) is True and is_prime(j-i) is True:
+            result.append(i)
+    m=max(result)
+    print(f'{m} {j-m}')
