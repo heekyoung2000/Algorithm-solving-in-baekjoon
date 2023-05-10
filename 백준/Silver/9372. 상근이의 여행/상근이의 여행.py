@@ -21,8 +21,8 @@ def bfs(tree, start):
 for i in range(T):
     
     n,m = map(int,s.readline().split())
-    flight_list=[[] for _ in range(m+2)]
-    visited = [False for _ in range(m+2)]
+    flight_list=[[] for _ in range(n+1)]
+    visited = [False for _ in range(n+1)]
     for i in range(m):
         go,arrival= map(int,s.readline().split())
         flight_list[go].append(arrival)
