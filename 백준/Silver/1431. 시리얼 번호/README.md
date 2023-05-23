@@ -73,14 +73,14 @@ for i in range(len(siral_list)):
 from sys import stdin as s
 
 #s=open("input.txt","rt")
-#num_list=['0','1','2','3','4','5','6','7','8','9']
+num_list=['0','1','2','3','4','5','6','7','8','9']
 N= int(s.readline())
 siral_list=[]
 for _ in range(N):
     count=0
     siral = s.readline().strip()
     for i in siral:
-        if i.isdigit():
+        if i in num_list: #if i.isdigit() 도 맞음 - i에서 숫자면 판별해서 True면 count에 더해줌 
             count+=int(i)
     num=len(siral)
     siral_list.append((num,siral,count))
