@@ -23,4 +23,64 @@
 ### 출력 
 
  <p>첫째 줄에 M 이상이면서 가장 작은 차이를 출력한다. 항상 차이가 M이상인 두 수를 고를 수 있다.</p>
+ 
+ 
+### 💡 문제 해결 방법
+**알고리즘 : 정렬, 투포인터**<br>
+**이유 : 정렬로 풀어야 좀 더 편함**<br>
 
+투포인터로 풀었지만 정확한 개념을 알아둬야 할 것 같다.
+***
+### 💻코드
+* 원래 작성했던 코드
+```python
+from sys import stdin as s
+#s=open("input.txt","rt")
+n,m = map(int,s.readline().split())
+array=[]
+result=[]
+for _ in range(n):
+    num=int(s.readline().strip())
+    array.append(num)
+array.sort()
+## 투포인터 사용
+i=0
+j=len(array)-1
+while i<len(array) and j>0:
+    dif = abs(array[i]-array[j])
+    if m <=dif:
+        result.append(dif)
+        i+=1
+    else:
+        j-=1
+print(min(result))
+```
+
+* 해설을 참고해서 다시 작성한 코드
+```python
+from sys import stdin as s
+s=open("input.txt","rt")
+
+n,m = map(int,s.readline().split())
+array=[]
+result=[]
+for _ in range(n):
+    num=int(s.readline().strip())
+    array.append(num)
+array.sort()
+## 투포인터 사용
+i=0
+j=0
+while i<len(array) and j<len(array):
+    dif = abs(array[i]-array[j])
+    if m <=dif:
+        result.append(dif)
+        i+=1
+    if m>dif:
+        j+=1
+print(min(result))
+```
+
+***
+### 🙄 틀린이유와 해결책
+투포인터를 설정할 때 left와 right를 모두 0으로 설정해서 브루트탐색법을 이용해야 하는데 left를 배열 끝점으로 설정함으로써 완전탐색을 하지 못했다. 따라서 left를 0으로 설정하였다.
