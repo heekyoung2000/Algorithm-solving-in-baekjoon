@@ -29,4 +29,85 @@
 ### 출력 
 
  <p>각 테스트 케이스마다, 입력으로 주어진 순열에 존재하는 순열 사이클의 개수를 출력한다.</p>
+ 
+### 💡 문제 해결 방법
+**알고리즘** : bfs<br>
+**이유** : dfs로도 풀수 있는데 가장 익숙한 bfs로 풀었다. 다음에는 좀 더 코드 길이가 짧고 좋은 알고리즘으로 풀어보자<br>
+
+- visited 함수를 생성해서 방문했을 시 true로 바꾸어 주고 방문하지 않은 노드를 찾다가 방문한 노드를 재방문 했을 시 멈추고 cnt+=1을 해준다.
+
+### 💻코드
+* 내가 작성한 코드(bfs)<br>
+사실 이 코드도 다른 사람의 해설을 참고해서 작성한 코드이다..
+
+
+```python
+from sys import stdin as s
+from collections import deque
+
+s=open("input.txt","rt")
+
+def bfs(i):
+    queue = deque([number_list[i]])
+    while queue:
+        v=queue.popleft()
+        visited[v]=True
+        n=number_list[v]
+        if not visited[n]:
+            queue.append(number_list[n])
+            visited[n]=True
+
+t=int(s.readline())
+for _ in range(t):
+    n=int(s.readline())
+    visited =[False]*(n+1)
+    visited[0]=True
+    number_list=[0]
+    cnt=0
+    num_list=list(map(int,s.readline().split()))
+    for i in num_list:
+        number_list.append(i)
+    for i in range(1,len(number_list)):
+        if visited[i]==False:
+            bfs(i)
+            cnt+=1
+    print(cnt)
+```
+
+* dfs로 작성한 다른사람의 풀이
+
+```python
+import sys
+sys.setrecursionlimit(2000) #최대 재귀를 늘려줘야 런타임 에러를 피할 수 있다
+
+def dfs(x): #DFS 함수 정의
+    visited[x] = True #방문 체크
+    number = numbers[x] #다음 방문 장소
+    if not visited[number]: #방문하지 않았다면
+        dfs(number) #재귀
+
+for _ in range(int(input())):
+    N = int(input())
+    numbers = [0] + list(map(int, input().split()))
+    visited = [True] + [False] * N #방문여부확인용
+    result = 0
+    
+    for i in range(1, N+1):
+        if not visited[i]: #방문하지 않았다면
+            dfs(i) #DFS실행
+            result += 1 #결과값 += 1
+    print(result)
+```
+### 🤔 틀린 이유와 해결 책
+*일단 제일 큰 문제는 너무 졸려서 머리가 안돌아 갔다는 것이다... 사실 이건 변명*<br>
+한 사이클을 탐색 완료 했을 때 그 다음 사이클을 탐색하는 방법을 생각하지 못하고 다시 처음부터 탐색을 시작하는 코드로 작성했다. 특히 해설을 참고해서 작성했을 때는 ```visited =true```를 처음 부터 설정해주는 바람에 답이 다르게 출력되었다. 잘 생각하고 코드를 작성하자...<br>
+```visited =true```가 while 문 안에 들어가야 하는데 밖에 작성해주어서 틀렸다...
+```python
+ while queue:
+        v=queue.popleft()
+        visited[v]=True
+```
+#### 참고한 사이트<br>
+[순열 사이클](https://wookcode.tistory.com/164)
+[순열 사이클- dfs](https://claude-u.tistory.com/434)
 
