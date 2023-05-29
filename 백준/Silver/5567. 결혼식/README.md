@@ -24,3 +24,82 @@
 
  <p>첫째 줄에 상근이의 결혼식에 초대하는 동기의 수를 출력한다.</p>
 
+### 👌 문제 이해
+상근이가 친구들을 결혼식에 초대하려고 하는데 상근이의 친구와 친구의 친구까지 초대하려고 할때 결혼식에 초대하는 동기의 수를 출력하는 문제
+
+### 💡 문제 해결 방법<br>
+**알고리즘** : bfs<br>
+**이유** : 깊이 탐색이 아니라 너비 탐색을 해야한다고 생각했기 때문<br>
+사실 dfs로 풀어도 상관 없음
+
+### 💻 코드
+* 내가 작성한 코드<br>
+이게 무슨 개똥같은 코드야
+```python
+from sys import stdin as s
+from collections import deque
+
+#s=open("input.txt","rt")
+
+n=int(s.readline())
+m=int(s.readline())
+friend_list=[[] for _ in range(n+1)]
+
+def bfs(start):
+    num=0
+    queue=deque()
+    queue.append(start)
+    while queue:
+        v = queue.popleft()
+        for j in friend_list[v]:
+            if visited[j]==0:
+                num+=len(friend_list[j])
+                visited[j]=1
+    
+    return num
+    
+count=0
+visited = [0]*(n+1)
+visited[1]=1
+for i in range(m):
+    a,b=map(int,s.readline().split())
+    friend_list[a].append(b)
+count+=bfs(1)
+for s in friend_list[1]:
+    count+=bfs(s)
+
+print(count)
+```
+* 다른 코드 보고 다시 작성한 코드
+```python
+from sys import stdin as s
+from collections import deque
+
+#s=open("input.txt","rt")
+
+n=int(s.readline())
+m=int(s.readline())
+friend_list=[[] for _ in range(n+1)]
+
+count=0
+visited = [0]*(n+1)
+visited[1]=1
+for i in range(m):
+    a,b=map(int,s.readline().split())
+    friend_list[a].append(b)
+    friend_list[b].append(a)
+
+for s in friend_list[1]:
+    if not visited[s]:
+        visited[s]=1
+        count+=1
+    for j in friend_list[s]:
+        if not visited[j]:
+            visited[j]=1
+            count+=1
+
+print(count)
+```
+
+### 🤔 틀린 이유와 해결책
+bfs로 풀어야 한다는 것은 알았지만 친구의 친구를 찾아주는 과정에서 이미 방문한 노드를 다시 count를 해주어서 틀렸다. 해결책은 상근이의 친구와 친구의 친구를 count해주는 코드를 따로 작성했다.
