@@ -31,4 +31,84 @@
 ### 출력 
 
  <p>각 테스트 케이스에 대해서, 섬의 개수를 출력한다.</p>
+ 
+### 👌 문제 이해<br>
+가로,세로 대각선으로 연결되어 있는 사각형은 연결되어 있다고 하면, 서로 떨어져 있는 섬의 개수를 구하는 문제
+<br>
+### 🤔 문제 해결 방법<br>
+**알고리즘**:bfs<br>
+**이유** : 사각형에서 탐색 문제가 나온다? 무조건 bfs아니면 dfs이다.<br>
+
+### 💻 코드
+* BFS를 이용한 코드
+
+```python
+from sys import stdin as s
+from collections import deque
+#s=open("input.txt","rt")
+
+dx=[0,1,1,1,0,-1,-1,-1]
+dy=[1,1,0,-1,-1,-1,0,1]
+
+def bfs(x,y):
+    queue = deque()
+    queue.append((x,y))
+    while queue:
+        x,y=queue.popleft()
+        visited[x][y]=True
+        for z in range(8):
+            nx=dx[z]+x
+            ny=dy[z]+y
+            if 0<=nx<h and 0<=ny<w:
+                if ground_list[nx][ny]==1 and visited[nx][ny]==False:
+                    queue.append((nx,ny))
+                    visited[nx][ny]=True
+
+while 1:
+    ground_list=[]
+    w,h=map(int,s.readline().split())
+    visited=[[False]*w for _ in range(h)]
+    cnt=0
+    if w==0 and h==0:
+        break
+    else:
+        for _ in range(h):
+            list1=list(map(int,s.readline().split()))
+            ground_list.append(list1)
+        for i in range(h):
+            for j in range(w):
+                if ground_list[i][j]==1 and visited[i][j]==False:
+                    bfs(i,j)
+                    cnt+=1
+        print(cnt)
+                
+
+```
+
+* DFS를 이용한 코드
+
+
+### 🤔 실수한 부분& 주의할 점
+가로,세로, 대각선을 탐색할 때 만약 1이 근처에 있다면 1을 기준으로 다시 탐색해주어야 하는데 그 코드를 생각하지 못했다.<br>
+* 처음 작성한 코드
+```python
+if 0<=nx<h and 0<=ny<w:
+    if visited[nx][ny]==False:
+        queue.append((nx,ny))
+        visited[nx][ny]=True
+```
+
+* 다시 생각하고 작성한 코드
+```python
+if 0<=nx<h and 0<=ny<w:
+    if ground_list[nx][ny]==1 and visited[nx][ny]==False:
+            queue.append((nx,ny))
+            visited[nx][ny]=True
+```
+<br>
+
+ * 주의할 점<br>
+
+> 가로 : 이차원 배열에서 [✅][] 세로 : 이차원 배열에서 [][✅]
+
 
