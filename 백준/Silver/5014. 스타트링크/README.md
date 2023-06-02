@@ -27,4 +27,62 @@
 ### 출력 
 
  <p>첫째 줄에 강호가 S층에서 G층으로 가기 위해 눌러야 하는 버튼의 수의 최솟값을 출력한다. 만약, 엘리베이터로 이동할 수 없을 때는 "use the stairs"를 출력한다.</p>
+ 
+ 
+ > reference<br>
+[스타트링크 파이썬 풀이](https://haejun-kim.tistory.com/m/36)
+
+### 👌문제 이해
+f= 총 건물 층수<br>
+g = 스타크링크가 있는 층수<br>
+s = 강호가 현재 있는 층수<br>
+u - up 버튼<br>
+d - down 버튼<br>
+입력에 f,g,s,u,d가 주어진다고 할 때 강호가 s층에서 g층으로 가기 위해 눌러야 하는 버튼의 수의 최솟값을 구하는 문제<br>
+이 때 엘리베이터 버튼은 u,d만 존재하고 만약 엘리베이터를 이용해서 g층에 갈 수 없으면 "use the stairs"를 출력한다.
+
+### 💡 문제 해결 방법
+**알고리즘** : bfs<br>
+**이유** :
+
+visited 리스트를 생성하고 인덱스 값 만큼 누적합을 저장하여 g층에 도착했을 경우 누적합-1을 출력하고 도착하지 못했을 경우  "use the stairs"를 출력<br>
+* 누적합-1을 해주는 이유 : 처음 시작지졈을 1로 시작하기 때문
+
+### 💻 코드
+```python
+from sys import stdin as s
+from collections import deque
+#s=open("input.txt","rt")
+
+F,S,G,U,D=map(int,s.readline().split())
+#f= 총 건물 층수
+#g = 스타크링크가 있는 층수
+#s = 강호가 현재 있는 층수
+#u - up 버튼
+#d - down 버튼
+visited=[0 for _ in range(F+1)]
+
+def bfs():
+    queue=deque()
+    queue.append(S)
+    visited[S]=1
+    while queue:
+        v=queue.popleft()
+        if v==G:
+            return visited[v]-1
+        else:
+            for x in (v+U,v-D):
+                if 0<x<=F and visited[x]==0:
+                    visited[x]=visited[v]+1
+                    queue.append(x)
+     
+    return "use the stairs"
+               
+print(bfs())
+```
+
+### 🤔 틀린 이유와 해결책
+dfs로 풀려고 그랬는데 풀리지 않았고 어떻게 풀어야 할지도 몰랐다.
+이 문제와 비슷한 유형의 문제를 많이 풀어야 겠다.
+
 
