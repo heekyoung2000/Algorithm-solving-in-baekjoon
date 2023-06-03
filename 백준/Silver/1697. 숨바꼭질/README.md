@@ -24,3 +24,44 @@
 
  <p>수빈이가 동생을 찾는 가장 빠른 시간을 출력한다.</p>
 
+### 👌문제 이해
+스타트링크와 비슷한 문제로 수빈이가 n점 동생은k 점에 있을 때 수빈이가 동생을 찾는 가장 빠른 시간이 몇초 후인가를 구하는 문제
+이때 수빈이는 1초후에 x-1,x+1,2*x 위치로 이동할 수 있고, 0<=n,k<=100,000 이다.
+
+### 💡 문제 해결 방법
+**알고리즘** : bfs<br>
+**이유** : 스타트링크와 비슷한 문제라서..
+
+visited 리스트를 생성하고 인덱스 값 만큼 누적합을 저장하여 동생이 있는 위치까지 도달하면 visited[동생의 위치]의 값을 출력한다. 이때 범위가 100,000까지라는 것을 잘 생각해두어야 한다.<br>
+
+
+### 💻 코드
+```python
+from sys import stdin as s
+from collections import deque
+
+#s=open("input.txt","rt")
+n,k=map(int,s.readline().split())
+visited = [0]*(100001)
+
+def bfs():
+    queue=deque()
+    queue.append(n)
+    while queue:
+        v=queue.popleft()
+        if v==k:
+            return visited[k]
+        
+        for x in (v-1,v+1,2*v):
+            if 0<=x<=100000:
+                if visited[x]==0:
+                    visited[x]=visited[v]+1
+                    queue.append(x)
+            
+                    
+print(bfs())
+```
+
+### 🤔 틀린이유와 해결책
+범위를 설정하는데 있어 visisted를 100,001까지 설정해주어야 한다는점을 간과해 index에러가 발생했다. 또한 수빈이가 움직일 수 있는 범위도 100,000까지인데 2*(수빈이의 위치)로 설정해서 틀렸다.
+앞으로는 범위설정을 꼼꼼히 확인하자!
