@@ -74,3 +74,6 @@ Empty
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+
+### 참고 자료
+https://yongku.tistory.com/entry/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%98%81%EC%96%B4%EA%B0%80-%EC%8B%AB%EC%96%B4%EC%9A%94-%EC%9E%90%EB%B0%94JAVA
