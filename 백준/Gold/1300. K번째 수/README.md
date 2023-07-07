@@ -24,3 +24,5 @@
 
  <p>B[k]를 출력한다.</p>
 
+### 참고한 사이트
+https://st-lab.tistory.com/281
