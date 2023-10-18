@@ -1,17 +1,16 @@
 def solution(n, computers):
-    visited=[0]*n
     answer = 0
-    def dfs(i):
-        visited[i]=1
-        for idx,c in enumerate(computers[i]):
-            if c and visited[idx]==0:
-                dfs(idx)
+    visited = [0]*n #방문 표시 리스트
+    def dfs(pc):
+        visited[pc]=1
+        for i in range(n):
+            if visited[i]==0 and computers[pc][i]:
+                dfs(i)
     
-    for i in range(n):
-        if visited[i] ==0:
-            dfs(i)
+    for pc in range(n):
+        if visited[pc]==0:
+            dfs(pc)
             answer+=1
-    return answer
-
-
+                
     
+    return answer
