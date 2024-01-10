@@ -1,38 +1,30 @@
-from sys import stdin as s
-from collections import deque
 import sys
-sys.setrecursionlimit(10**6)
+from collections import deque
 
-#s=open("input.txt","rt")
+computer = int(sys.stdin.readline())
+line = int(sys.stdin.readline())
 
-n=int(s.readline()) #n : 컴퓨터의 수
-e = int(s.readline()) #e : 간선의 수
-graph=[[] for _ in range(n+1)]
-visited = [False] * (n+1)
+connect = [[] for _ in range(computer+1)]
+visited = [False for i in range(computer+1)]
+#1-2-3
+#1-5-6
 
-
-#bfs 방식으로 풀어보기
-def bfs(start):
-    count=0
-    queue = deque()
-    queue.append(start)
+def dfs(start):
     visited[start]=True
-    while queue:
-        v = queue.popleft()
-        for i in graph[v]:
-            if not visited[i]:
-                count+=1
-                visited[i]=True
-                queue.append(i)
-           
-                
-    return count
+    for i in connect[start]:
+        if visited[i]==False:
+            dfs(i)
+    return visited
 
-for i in range(e):
-    a,b = map(int,s.readline().split())
-    graph[a].append(b)
-    graph[b].append(a)
-    graph[a].sort()
-    graph[b].sort()
+for i in range(line):
+    n,m = map(int,sys.stdin.readline().split())
+    connect[n].append(m)
+    connect[m].append(n)
     
-print(bfs(1))
+count=0
+dfs(1)
+for i in visited:
+    if i==True:
+        count+=1
+    
+print(count-1)
