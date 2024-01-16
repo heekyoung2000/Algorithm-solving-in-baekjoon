@@ -1,46 +1,55 @@
+import sys
 from collections import deque
 
-def BFS(x,y):
+N = int(sys.stdin.readline().strip())
+color_map=[]
+visited_t=[[False for i in range(N)]for j in range(N)]
+visited_f=[[False for i in range(N)]for j in range(N)]
+for i in range(N):
+    map_list = list(map(str,sys.stdin.readline().strip()))
+    color_map.append(map_list)
+
+def bfs(x,y,color,visited,color_map):
+    dx=[1,0,-1,0]
+    dy=[0,-1,0,1]
+    q = deque()
     q.append((x,y))
-    dx = [-1,0,1,0]
-    dy = [0,1,0,-1]
-    visited[x][y] = 1
     while q:
-        x, y = q.popleft()
-        for d in range(4):
-            nx = x + dx[d]
-            ny = y + dy[d]
-            # 인덱스 범위 안에 있으면서, 같은 색이면서, 방문 안한 경우
-            if 0<=nx<N and 0<=ny<N and a[nx][ny] == a[x][y] and not visited[nx][ny]:
-                visited[nx][ny] = 1  # 방문체크 후 큐에 넣음
+        x,y=q.popleft()
+        for i in range(4):
+            nx=x+dx[i]
+            ny=y+dy[i]
+            if 0<=nx<N and 0<=ny<N and color_map[nx][ny]==color and visited[nx][ny]==False:
+                visited[nx][ny]=True
                 q.append((nx,ny))
-
-
-N = int(input())
-a = [list(input()) for _ in range(N)]
-q = deque()
-
-# 적록색약 아닌 경우
-visited = [[0] * N for _ in range(N)]
-cnt1 = 0
+                
+#적록 색맹이 아닐 경우
+cnt_f = 0
 for i in range(N):
     for j in range(N):
-        if not visited[i][j]:  # 아직 방문 안한 경우만 체킹
-            BFS(i,j)
-            cnt1 += 1
+        if color_map[i][j]=="R" and visited_f[i][j]==False:
+            bfs(i,j,"R",visited_f,color_map)
+            cnt_f+=1
+        elif color_map[i][j]=="B" and visited_f[i][j]==False:
+            bfs(i,j,"B",visited_f,color_map)
+            cnt_f+=1
+        elif color_map[i][j]=="G" and visited_f[i][j]==False:
+            bfs(i,j,"G",visited_f,color_map)
+            cnt_f+=1
+print(cnt_f,end=" ")
 
-# 적록색약인 경우
+#적록 색맹일 경우
+cnt_t = 0 
 for i in range(N):
     for j in range(N):
-        if a[i][j] == 'G':
-            a[i][j] = 'R'
-
-visited = [[0] * N for _ in range(N)]
-cnt2 = 0
+        if color_map[i][j]=="G":
+            color_map[i][j]="R"
 for i in range(N):
     for j in range(N):
-        if not visited[i][j]:
-            BFS(i,j)
-            cnt2 += 1
-
-print(cnt1, cnt2)
+        if color_map[i][j]=="B" and visited_t[i][j]==False:
+            bfs(i,j,"B",visited_t,color_map)
+            cnt_t+=1
+        elif color_map[i][j]=="R" and visited_t[i][j]==False:
+            bfs(i,j,"R",visited_t,color_map)
+            cnt_t+=1
+print(cnt_t)
