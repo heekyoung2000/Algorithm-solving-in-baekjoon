@@ -1,9 +1,21 @@
 def solution(citations):
     k=len(citations)
     
+    def s(arr): #정렬 구현
+        n=len(citations)
+        a=0
+        while a<n-1:
+            last=n-1
+            for j in range(n-1,a,-1):
+                if arr[j-1]>arr[j]:
+                    arr[j-1],arr[j]=arr[j],arr[j-1]
+                    last=j
+            n=last
+        return arr
+    
     def sorted(new_arr):
         result=[]
-        new_arr.sort()
+        s(new_arr)
         left=0
         right=new_arr[-1]
         while left<right:
