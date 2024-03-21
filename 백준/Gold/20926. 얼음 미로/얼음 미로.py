@@ -1,54 +1,75 @@
 import sys
 import heapq
 
-m, n = map(int, sys.stdin.readline().rstrip().split())
-INF = sys.maxsize
-nodes = []
-start = [0, 0]
-end = [0, 0]
-dx = [1, -1, 0, 0]
-dy = [0, 0, 1, -1]
-for i in range(n):
-    row = list(sys.stdin.readline().rstrip())
-    for j in range(m):
-        if row[j] == 'T':
-            row[j] = '0'
-            start = [i, j]
-        elif row[j] == 'E':
-            end = [i, j]
-    nodes.append(row)
+input = sys.stdin.readline
+INF = int(1e9)
+board=[]
+W,H = map(int,input().split())
+distance = [[INF]*W for _ in range(H)]
+dx=[0,1,0,-1]
+dy=[1,0,-1,0]
 
-def Dijkstra():
-    distances = [[INF for _ in range(m)] for _ in range(n)]
-    distances[start[0]][start[1]] = 0
-    pq = []
-    heapq.heappush(pq, [0, start[0], start[1]])
-
-    while pq:
-        cur_cost, cur_row, cur_col = heapq.heappop(pq)
-        if distances[cur_row][cur_col] < cur_cost: continue
-
-        for x, y in zip(dx, dy):
-            next_row, next_col = cur_row, cur_col
-            next_cost = 0
-            while True:
-                if next_row + y < 0 or next_col + x < 0 or next_row + y >= n or next_col + x >= m or not nodes[next_row+y][next_col+x].isdigit(): break
-                next_row += y
-                next_col += x
-                next_cost += int(nodes[next_row][next_col])
-            #     이동 가능할 때까지 빙판 이동
-            if next_row + y < 0 or next_col + x < 0 or next_row + y >= n or next_col + x >= m or nodes[next_row+y][next_col+x] == 'H':continue
-            #     다음 이동하는 곳이 구멍이라면 불가능
-            elif nodes[next_row+y][next_col+x] == 'E':
-                next_row += y
-                next_col += x
-            #     다음 이동하는 곳이 출구라면 가능
-            if distances[next_row][next_col] > cur_cost + next_cost:
-                distances[next_row][next_col] = cur_cost + next_cost
-                heapq.heappush(pq, [cur_cost + next_cost, next_row, next_col])
-    ans = distances[end[0]][end[1]]
-    if ans == INF: return -1
-    else: return ans
-
-ans = Dijkstra()
-print(ans)
+for _ in range(H):
+    board.append(list(input().strip()))
+for i in range(H):
+    for j in range(W):
+        if board[i][j]=="T":
+            start_x,start_y= i,j
+        elif board[i][j]=="E":
+            end_x,end_y=i,j
+            
+def move(x,y,dir):
+    slide=0
+    while True:
+        nx,ny = x+dx[dir],y+dy[dir]
+        
+        # 다음 칸이 절벽
+        if not (0<=nx<H and 0<=ny<W):
+            return -1
+        # 다음 칸이 구멍
+        if board[nx][ny]=='H':
+            return -1
+        # 다음 칸이 바위
+        if board[nx][ny]=="R":
+            return [x,y,slide,dir]
+        # 다음 칸이 출구
+        if board[nx][ny]=="E":
+            return [nx,ny,slide,dir]
+        # 다음 칸이 출발점 : 사이클 방지
+        if nx==start_x and ny==start_y:
+            return -1
+        # 다음 칸이 평범
+        x,y=nx,ny
+        slide += int(board[nx][ny])
+            
+def dijkstra(x,y):
+    q=[]
+    heapq.heappush(q,(0,x,y))
+    distance[x][y]=0
+    board[x][y]=0
+    
+    while q:
+        dis,new_x,new_y = heapq.heappop(q)
+        
+        if dis>distance[new_x][new_y]:
+            continue
+        for i in range(4):
+            result=move(new_x,new_y,i)
+            if result==-1: continue
+            nx,ny,addSlide,dir = result
+            sumSlide = addSlide + dis
+            
+            if distance[nx][ny] > sumSlide:
+                distance[nx][ny]=sumSlide
+                heapq.heappush(q,(sumSlide,nx,ny))
+            
+                
+dijkstra(start_x,start_y)
+ans = distance[end_x][end_y]
+if ans==INF:
+    print(-1)
+else :
+    print(ans)
+                    
+                    
+                    
