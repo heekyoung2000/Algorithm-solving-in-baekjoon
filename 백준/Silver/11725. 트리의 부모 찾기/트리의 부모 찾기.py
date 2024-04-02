@@ -1,27 +1,24 @@
-from sys import stdin as s
-from collections import deque
 import sys
-sys.setrecursionlimit(10**6)
+sys.setrecursionlimit(10**9)
+input = sys.stdin.readline
 
-#s=open("input.txt","rt")
+N= int(input().strip())
+tree = [[] for _ in range(N+1)]
+visited=[False for _ in range(N+1)]
+answer = [1 for _ in range(N+1)]
 
-n=int(s.readline())
-graph =[[] for i in range(n+1)]
-visited = [0]*(n+1)
-arr=[]
-
-for i in range(n-1):
-    a,b=map(int,s.readline().split())
-    graph[a].append(b)
-    graph[b].append(a)
+for _ in range(N-1):
+    a,b = map(int,input().split())
+    tree[a].append(b)
+    tree[b].append(a)
     
-    
-def dfs(s):
-    for i in graph[s]:
-        if visited[i]==0:
-            visited[i]=s
-            dfs(i)
+def DFS(node):
+    visited[node]=True
+    for i in tree[node]:
+        if not visited[i]:
+            answer[i]=node
+            DFS(i)
 
-dfs(1)
-for x in range(2,n+1):
-    print(visited[x])
+DFS(1)
+for z in range(2,N+1):
+    print(answer[z])
