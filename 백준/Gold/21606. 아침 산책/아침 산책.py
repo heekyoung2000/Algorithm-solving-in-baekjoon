@@ -8,7 +8,6 @@ graph=[[] for _ in range(n+1)]
 visited=[False]*(n+1)
 location = list(map(int,list("0"+s.readline().strip())))#각 노드가 실내(1)인지 실외(0)인지 저장한 문자열, 이때 노드 번호를 index에 접근하기 위해 앞에 0추가
 sum=0
-result=0
 
 for _ in range(n-1):
     u,v= map(int,s.readline().split())
@@ -35,7 +34,7 @@ def dfs(start):
 
 for i in range(1,n+1):
     if not visited[i] and location[i]==0: #시작이 실외일떄만 발생
-        result+=dfs(i)#dfs를 통해 인접한 실내 노드 개수를 계산
+        result=dfs(i)#dfs를 통해 인접한 실내 노드 개수를 계산
         sum+=result*(result-1) #경로의 개수 추가
 
   
