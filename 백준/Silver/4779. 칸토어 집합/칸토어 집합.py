@@ -1,25 +1,22 @@
 import sys
 
-#s=open("input.txt","rt")
-
-
-def again(num,start,kantoa):
-    if num==1:
-        return kantoa
+input = sys.stdin.readline
+def recursive(length,start,s_list):
+    if length==1:
+        return s_list
     else:
-        num=num//3
-        again(num,start,kantoa)
-        for i in range(start+num,start+num*2):
-            kantoa[i]=" "
-        again(num,start+num*2,kantoa)
-        
+        length=length//3
+        for i in range(start+length,start+length*2):
+            s_list[i]=" "
+        recursive(length,start,s_list)
+        recursive(length,start+length*2,s_list)
+    
+    
 while True:
-    try:       
-        n=int(sys.stdin.readline().strip())
-        num=3**n
-        kantoa = ['-']*(num)
-        answer=""
-        again(num,0,kantoa)
-        print(''.join(kantoa))
+    try:
+        N = int(input())
+        s_list = ['-']*(3**(N))
+        recursive(len(s_list),0,s_list)
+        print(''.join(s_list)) 
     except:
         break
