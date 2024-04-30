@@ -1,38 +1,37 @@
-from sys import stdin as s
+import sys
 from collections import deque
+input =sys.stdin.readline
 
-#s=open("input.txt","rt")
-
-t= int(s.readline())
-array_list=[]
-x_list=[0,1,0,-1]
-y_list=[1,0,-1,0]
-
+T = int(input())
+dx=[0,1,0,-1]
+dy=[1,0,-1,0]
 
 def bfs(i,j):
-    queue=deque()
-    queue.append((i,j))
-    while queue:
-        cur_x,cur_y=queue.popleft()
-        array_list[cur_x][cur_y]=0
-        for z in range(4):
-            new_x=x_list[z]+cur_x
-            new_y=y_list[z]+cur_y
-            if 0<=new_x<n and 0<=new_y<m:
-                if array_list[new_x][new_y]==1:
-                    queue.append((new_x,new_y))
-                    array_list[new_x][new_y]=0
-                    
-for _ in range(t):
+    q=deque()
+    q.append((i,j))
+    visited[i][j]=True
+    while q:
+        ni,nj = q.popleft()
+        for a in range(4):
+            newi,newj = ni+dx[a],nj+dy[a]
+            if 0<=newi<N and 0<=newj < M and board[newi][newj]==1 and visited[newi][newj]==False:
+                visited[newi][newj]=True
+                q.append((newi,newj))
+                
+
+for _ in range(T):
+    M,N,K = map(int, input().split())
+    board = [[0]*M for _ in range(N)]
+    visited = [[False]*M for _ in range(N)]
+    for _ in range(K):
+        x,y=map(int,input().split())
+        board[y][x]=1
+        
     cnt=0
-    m,n,k=map(int,s.readline().split())
-    array_list=[[0 for _ in range(m)] for _ in range(n)]
-    for _ in range(k):
-        x,y=map(int,s.readline().split())
-        array_list[y][x]=1  
-    for i in range(n):
-        for j in range(m):
-            if array_list[i][j]==1:
+    for i in range(N):
+        for j in range(M):
+            if board[i][j]==1 and visited[i][j]==False:
                 bfs(i,j)
                 cnt+=1
     print(cnt)
+                
