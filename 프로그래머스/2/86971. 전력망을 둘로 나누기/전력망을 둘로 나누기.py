@@ -1,20 +1,33 @@
-def solution(n, wires):
-    answer = 100
-    test = [[wires[i] for i in range(len(wires)) if i != j] for j in range(len(wires))] # 전선 하나씩 끊어보기
+from collections import deque
+def bfs(w,n,graph): #bfs 수행을 통해 연결된 노드수 구하기
+    count=1 #연결된 노드 수
+    visited=[False]*(n+1)
+    visited[w[0]]=True
+    queue = deque([w[0]])
     
-    for wire in test:
-        graph = [[] for _ in range(n)] # 인접 리스트 생성
-        visited = [False] * n
-        for w in wire:
-            graph[w[0]-1].append(w[1]-1) # 노드 양방향으로
-            graph[w[1]-1].append(w[0]-1) # 연결 추가
-        m = dfs(graph, visited, 0, 1) # 연결된 송전탑 수
-        answer = min(answer, abs(n-2*m)) # 일부m과 (전체n - 일부m)으로 나눠짐. |(n-m) - m| = |n - 2*m|
-    return answer
+    while queue:
+        v = queue.popleft()
+        for i in graph[v]:
+            if visited[i] or i==w[1]: #방문했거나 끊어지는 부분의 노드인 경우 패스
+                continue
+            count+=1
+            queue.append(i)
+            visited[i]=True
+    return count
+    
+    
+def solution(n, wires):
+    result = 100000000
+    graph = [[]*i for i in range(n+1)]
 
-def dfs(graph, visited, start, n):
-    visited[start] = True # 방문 처리
-    for i in graph[start]:
-        if not visited[i]:
-            n = dfs(graph, visited, i, n+1) # n증가
-    return n
+    # 양방향 간선 추가
+    for i in wires:
+        graph[i[0]].append(i[1])
+        graph[i[1]].append(i[0])
+    #bfs로 완전탐색
+    for w in wires:
+        #와이어를 끊었을 때 한쪽 영역의 노드 수 구하기
+        temp = bfs(w,n,graph)
+        
+        result = min(result,abs(n-temp-temp))
+    return result
