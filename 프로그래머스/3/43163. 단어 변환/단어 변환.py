@@ -20,7 +20,3 @@ def bfs(word,words,target):
                     count+=1
             if count==1:
                 q.append([w,answer+1])
-                
-    
-    
-    
